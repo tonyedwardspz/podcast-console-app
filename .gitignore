@@ -1,3 +1,6 @@
+.vs/podcast-console-app/v17/.suo
+.vs/podcast-console-app/FileContentIndex/*
+
 # Ignore bin, obj, and properties folders
 bin/
 obj/
@@ -10,5 +13,3 @@ properties/
 .DS_Store
 .AppleDouble
 .LSOverride
-.vs/podcast-console-app/FileContentIndex/fad617f6-a49c-4fc7-b81c-606a5651b9eb.vsidx
-.vs/podcast-console-app/v17/.suo

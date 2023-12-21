@@ -1,14 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace podcast_console_app
 {
     internal class Program
     {
-        internal static string filePath = @"D:\Podcasts\tonys-podcasts";
+        // A dictionary to store the paths the user initially selects from
+        internal static Dictionary<string, string> libraries = new Dictionary<string, string>()
+        {
+            {"Tony's Podcasts", @"D:\Podcasts\tonys-podcasts"},
+            {"Wellbeing Podcasts", @"D:\Podcasts\tony-meditation"},
+            {"Archive Podcasts", @"D:\Podcasts\tonys-archive"},
+            {"Sleep Podcasts", @"D:\Podcasts\sleep-meditation-podcasts"}
+        };
+
+        internal static string filePath;
         internal static string folderNumber;
         internal static string fileNumber;
         static void Main(string[] args)
         {
+            Console.WriteLine("Please select a library: ");
+            ListLibraries();
+
             ListFolders(filePath);
             Console.WriteLine("Please select a folder number: ");
             folderNumber = Console.ReadLine();
@@ -20,20 +34,29 @@ namespace podcast_console_app
             PlayFile(filePath, folderNumber, fileNumber);
         }
 
-        // A function that lists all of the folders in the passed directory
+        public static void ListLibraries()
+        {
+            foreach (KeyValuePair<string, string> library in libraries)
+            {
+                int i = Array.IndexOf(libraries.ToArray(), library);
+                Console.WriteLine($"[{i}] - {library.Key}");
+            }
+            string libraryNumber = Console.ReadLine();
+            filePath = libraries.ElementAt(int.Parse(libraryNumber)).Value;
+            return;
+        }
+
         public static void ListFolders(string path)
         {
             string[] folders = System.IO.Directory.GetDirectories(path);
 
             foreach (string folder in folders)
             {
-               
                 int i = Array.IndexOf(folders, folder);
                 Console.WriteLine($"[{i}] - {folder}");
             }
         }
 
-        // A function that lists all of the files in the selected folder
         public static void ListFiles(string path, string folderNumber)
         {
             string[] folders = System.IO.Directory.GetDirectories(path);
@@ -43,11 +66,11 @@ namespace podcast_console_app
             foreach (string file in files)
             {
                 int i = Array.IndexOf(files, file);
-                Console.WriteLine($"[{i}] - {file}");
+                string fileName = System.IO.Path.GetFileName(file);
+                Console.WriteLine($"[{i}] - {fileName}");
             }
         }
 
-        // a Function that plays the selected audio file in the default player
         public static void PlayFile(string path, string folderNumber, string fileNumber)
         {
             string[] folders = System.IO.Directory.GetDirectories(path);
@@ -55,7 +78,7 @@ namespace podcast_console_app
 
             string[] files = System.IO.Directory.GetFiles(folderPath);
             string filePath = files[int.Parse(fileNumber)];
-            
+
             System.Diagnostics.Process.Start(filePath);
         }
     }
